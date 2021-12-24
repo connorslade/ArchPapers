@@ -1,5 +1,4 @@
 use clap::{App, Arg};
-use image;
 
 const BASE: &[u8] = include_bytes!("../data/base.png");
 

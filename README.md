@@ -7,4 +7,4 @@ Some **Snazzy** [Wallpapers](https://github.com/Basicprogrammer10/ArchPapers/tre
 |![#2](https://raw.githubusercontent.com/Basicprogrammer10/ArchPapers/main/img/2-ArchPaper.png)|![#3](https://raw.githubusercontent.com/Basicprogrammer10/ArchPapers/main/img/3-ArchPaper.png)|
 
 ### [🖼 Download Images](https://github.com/Basicprogrammer10/ArchPapers/archive/refs/heads/main.zip)
-### [🚀 Genarate Your Own](https://github.com/Basicprogrammer10/ArchPapers/archive/refs/heads/main.zip)
+### [🚀 Generate Your Own](https://github.com/Basicprogrammer10/ArchPapers/blob/main/CLI.md)
