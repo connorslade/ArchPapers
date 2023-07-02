@@ -1,23 +1,25 @@
 use std::path::PathBuf;
 
 use clap::{command, value_parser, Arg};
+use image::{GenericImageView, RgbaImage};
+use resvg::tiny_skia::{Pixmap, Transform};
+use resvg::usvg::{self, Options, TreeParsing};
 
-const BASE: &[u8] = include_bytes!("../data/base.png");
+const MASK: &[u8] = include_bytes!("../data/arch.svg");
 
 fn main() {
     let arg = command!()
-        // .version(VERSION)
-        // .author("Connor Slade <connor@connorcode.com>")
-        // .about("Generate Arch Linux Wallpapers")
         .arg(
             Arg::new("INPUT")
                 .help("Define background image to use")
-                .required(true),
+                .required(true)
+                .value_parser(value_parser!(PathBuf)),
         )
         .arg(
             Arg::new("OUTPUT")
                 .help("Define output file to write to")
-                .required(true),
+                .required(true)
+                .value_parser(value_parser!(PathBuf)),
         )
         .arg(
             Arg::new("blur")
@@ -39,7 +41,7 @@ fn main() {
     let out_file = arg.get_one::<PathBuf>("OUTPUT").unwrap();
 
     println!("[*] Starting ArchPapers V{}", env!("CARGO_PKG_VERSION"));
-    let base = image::load_from_memory_with_format(BASE, image::ImageFormat::Png).unwrap();
+
     println!("[*] Loading `{}`", inp_file.to_string_lossy());
     let mut bg = match image::open(inp_file) {
         Ok(i) => i,
@@ -59,13 +61,28 @@ fn main() {
     }
 
     println!("[*] Generating Image");
-    let bg_dim = bg.clone().into_rgba8().dimensions();
-    let base = base.resize_to_fill(bg_dim.0, bg_dim.1, image::imageops::Triangle);
-
+    let base = render_mask((bg.width(), bg.height()));
     image::imageops::overlay(&mut bg, &base, 0, 0);
 
     println!("[*] Saving Image to `{}`", out_file.to_string_lossy());
     if let Err(_) = bg.save(out_file) {
         println!("[-] Invalid Image Output");
     };
+}
+
+fn render_mask(size: (u32, u32)) -> RgbaImage {
+    let svg = usvg::Tree::from_data(MASK, &Options::default()).unwrap();
+    let svg = resvg::Tree::from_usvg(&svg);
+
+    let scale_x = size.0 as f32 / svg.size.width();
+    let scale_y = size.1 as f32 / svg.size.height();
+    let scale = scale_x.min(scale_y);
+
+    let mut pixmap = Pixmap::new(size.0, size.1).unwrap();
+    svg.render(
+        Transform::default().pre_scale(scale, scale),
+        &mut pixmap.as_mut(),
+    );
+
+    image::RgbaImage::from_raw(size.0, size.1, pixmap.data().to_vec()).unwrap()
 }

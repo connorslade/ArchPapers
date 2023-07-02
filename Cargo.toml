@@ -13,3 +13,4 @@ edition = "2021"
 [dependencies]
 image = "0.23.14"
 clap = { version = "4.1.13", features = ["cargo"] }
+resvg = "0.35.0"
