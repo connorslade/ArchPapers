@@ -1,61 +1,31 @@
-use std::path::PathBuf;
-
-use clap::{command, value_parser, Arg};
+use clap::Parser;
 use image::{GenericImageView, RgbaImage};
 use resvg::tiny_skia::{Pixmap, Transform};
 use resvg::usvg::{self, Options, TreeParsing};
 
+mod args;
+
 const MASK: &[u8] = include_bytes!("../data/arch.svg");
 
 fn main() {
-    let arg = command!()
-        .arg(
-            Arg::new("INPUT")
-                .help("Define background image to use")
-                .required(true)
-                .value_parser(value_parser!(PathBuf)),
-        )
-        .arg(
-            Arg::new("OUTPUT")
-                .help("Define output file to write to")
-                .required(true)
-                .value_parser(value_parser!(PathBuf)),
-        )
-        .arg(
-            Arg::new("blur")
-                .help("Blur the background image")
-                .short('b')
-                .long("blur")
-                .value_parser(value_parser!(f32)),
-        )
-        .arg(
-            Arg::new("darken")
-                .help("Darken the background image")
-                .short('d')
-                .long("darken")
-                .value_parser(value_parser!(i32)),
-        )
-        .get_matches();
-
-    let inp_file = arg.get_one::<PathBuf>("INPUT").unwrap();
-    let out_file = arg.get_one::<PathBuf>("OUTPUT").unwrap();
-
     println!("[*] Starting ArchPapers V{}", env!("CARGO_PKG_VERSION"));
+    let arg = args::Args::parse();
+    dbg!(&arg.color);
 
-    println!("[*] Loading `{}`", inp_file.to_string_lossy());
-    let mut bg = match image::open(inp_file) {
+    println!("[*] Loading `{}`", arg.input.to_string_lossy());
+    let mut bg = match image::open(arg.input) {
         Ok(i) => i,
         Err(_) => return println!("[-] Invalid Image Input"),
     };
 
     // Blur
-    if let Some(i) = arg.get_one::<f32>("blur") {
+    if let Some(i) = arg.blur {
         println!("[*] Blurring Image");
-        bg = bg.blur(*i);
+        bg = bg.blur(i);
     }
 
     // Darken
-    if let Some(i) = arg.get_one::<i32>("darken") {
+    if let Some(i) = arg.darken {
         println!("[*] Darking Image");
         bg = bg.brighten(-i);
     }
@@ -64,9 +34,9 @@ fn main() {
     let base = render_mask((bg.width(), bg.height()));
     image::imageops::overlay(&mut bg, &base, 0, 0);
 
-    println!("[*] Saving Image to `{}`", out_file.to_string_lossy());
-    if let Err(_) = bg.save(out_file) {
-        println!("[-] Invalid Image Output");
+    println!("[*] Saving Image to `{}`", arg.output.to_string_lossy());
+    if let Err(e) = bg.save(arg.output) {
+        println!("[-] Error saving image\n{e}");
     };
 }
 
