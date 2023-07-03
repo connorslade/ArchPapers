@@ -30,6 +30,11 @@ pub struct Args {
     /// None by default.
     #[arg(short, long)]
     pub darken: Option<i32>,
+
+    /// The translation to apply to the background image.
+    /// (x, y)
+    #[arg(short, long, value_parser = coords, default_value = "0,0")]
+    pub translate: (i32, i32),
 }
 
 fn hex(inp: &str) -> Result<[u8; 3], String> {
@@ -45,4 +50,20 @@ fn hex(inp: &str) -> Result<[u8; 3], String> {
     }
 
     Ok(out)
+}
+
+fn coords(inp: &str) -> Result<(i32, i32), String> {
+    let mut inp = inp.split(',');
+    let x = inp
+        .next()
+        .ok_or("Invalid Coordinates")?
+        .parse::<i32>()
+        .map_err(|_| "Invalid Coordinates")?;
+    let y = inp
+        .next()
+        .ok_or("Invalid Coordinates")?
+        .parse::<i32>()
+        .map_err(|_| "Invalid Coordinates")?;
+
+    Ok((x, y))
 }

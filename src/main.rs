@@ -1,5 +1,6 @@
 use clap::Parser;
-use image::{GenericImageView, RgbaImage};
+use image::{DynamicImage, RgbaImage};
+use imageproc;
 use resvg::tiny_skia::{Color, Mask, MaskType, Pixmap, PremultipliedColorU8, Transform};
 use resvg::usvg::{self, Options, TreeParsing};
 
@@ -16,6 +17,12 @@ fn main() {
         Ok(i) => i,
         Err(_) => return println!("[-] Invalid Image Input"),
     };
+
+    // Translate
+    bg = DynamicImage::from(imageproc::geometric_transformations::translate(
+        &bg.to_rgb8(),
+        (arg.translate.0, arg.translate.1),
+    ));
 
     // Blur
     if let Some(i) = arg.blur {
