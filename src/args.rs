@@ -18,8 +18,8 @@ pub struct Args {
     pub invert: bool,
 
     /// The color to use for the background
-    #[arg(short, long, value_parser = hex)]
-    pub color: Option<[u8; 3]>,
+    #[arg(short, long, value_parser = hex, default_value = "#171718")]
+    pub color: [u8; 3],
 
     /// How much to blur the background image.
     /// None by default.
