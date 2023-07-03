@@ -38,14 +38,16 @@ fn main() {
     }
 
     println!("[*] Generating Image");
+
+    // Load mask from SVG
+    let size = arg.size.unwrap_or((bg.width(), bg.height()));
     let mask_data = match arg.mask {
         Some(m) => Cow::Owned(fs::read(m).expect("Error reading mask")),
         None => Cow::Borrowed(MASK),
     };
-
-    let size = (bg.width(), bg.height());
     let mask = render_mask(mask_data, size, arg.mask_scale, arg.invert);
 
+    // Create foreground mask
     let mut colored = Pixmap::new(size.0, size.1).unwrap();
     colored.fill(Color::from_rgba8(
         arg.color[0],
@@ -54,11 +56,27 @@ fn main() {
         255,
     ));
     colored.apply_mask(&mask);
+
+    // Scale background image
+    if arg.bg_scale != 1.0 {
+        bg = bg.resize(
+            (bg.width() as f32 * arg.bg_scale) as u32,
+            (bg.height() as f32 * arg.bg_scale) as u32,
+            image::imageops::FilterType::Lanczos3,
+        );
+    }
+
+    let overlay_x = (size.0 as i64 - bg.width() as i64) / 2;
+    let overlay_y = (size.1 as i64 - bg.height() as i64) / 2;
+
+    // Composite images
+    let mut image = image::RgbaImage::from_pixel(size.0, size.1, image::Rgba([0, 0, 0, 255]));
     let colored_img = RgbaImage::from_raw(size.0, size.1, colored.data().to_vec()).unwrap();
-    image::imageops::overlay(&mut bg, &colored_img, 0, 0);
+    image::imageops::overlay(&mut image, &bg, overlay_x, overlay_y);
+    image::imageops::overlay(&mut image, &colored_img, 0, 0);
 
     println!("[*] Saving Image to `{}`", arg.output.to_string_lossy());
-    if let Err(e) = bg.save(arg.output) {
+    if let Err(e) = image.save(arg.output) {
         println!("[-] Error saving image\n{e}");
     };
 }
