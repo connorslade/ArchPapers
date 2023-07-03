@@ -2,6 +2,8 @@
 
 ### [🖼 Download Images](https://github.com/Basicprogrammer10/ArchPapers/archive/refs/heads/main.zip)
 
+---
+
 ![](1.png)
 
 \- [Source Image](https://www.reddit.com/r/wallpaper/comments/m7x6a4/dreams_3440x1440), by James Sypniewski
@@ -42,3 +44,27 @@ Someone posted a [Gentoo wallpaper on reddit](https://www.reddit.com/r/linuxmast
 \- [Source Image](https://www.reddit.com/r/wallpapers/comments/tkhpx9/nautical_3840x2160), by James Sypniewski
 
 `arch-papers source_image out.png -s 3840,2160 -t 515,-50`
+
+---
+
+![](6.png)
+
+\- [Source Image](https://www.pexels.com/photo/silhouette-of-mountains-during-dawn-1809644), by Simon Rizzi
+
+`arch-papers source_image out.png -s 3840,2160 -t 100,500 --bg-scale 0.4`
+
+---
+
+![](7.png)
+
+\- [Source Image](https://www.pexels.com/photo/scenic-view-of-rocky-mountain-during-evening-1624438), by Eberhard Grossgasteiger
+
+`arch-papers source_image out.png -s 3840,2160 -t 750,900 --bg-scale 0.5`
+
+---
+
+![](8.png)
+
+\- [Source Image](https://www.pexels.com/photo/silhouette-of-mountains-during-sunset-12762122), by Simone Defendi
+
+`arch-papers source_image out.png -s 3840,2160 -t 600,300`
