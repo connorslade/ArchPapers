@@ -1,6 +1,6 @@
 # All Wallpapers
 
-### [🖼 Download Images](https://github.com/Basicprogrammer10/ArchPapers/archive/refs/heads/main.zip)
+### [🖼 Download Images](https://connorcode.com/files/Photos/ArchPapers.zip)
 
 ---
 
