@@ -43,7 +43,7 @@ Someone posted a [Gentoo wallpaper on reddit](https://www.reddit.com/r/linuxmast
 
 \- [Source Image](https://www.reddit.com/r/wallpapers/comments/tkhpx9/nautical_3840x2160), by James Sypniewski
 
-`arch-papers source_image out.png -s 3840,2160 -t 515,-50`
+`arch-papers source_image out.png -s 3840,2160 -t 1240,-80`
 
 ---
 
