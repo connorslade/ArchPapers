@@ -1,15 +1,19 @@
 [package]
 name = "arch_papers"
-description = "Genarate Arch Linux Wallpapers"
+description = "Generate Arch Linux Wallpapers"
 authors = ["Connor Slade <connor@connorcode.com>"]
-repository = "https://github.com/Basicprogrammer10/ArchPapers/"
+repository = "https://github.com/Basicprogrammer10/ArchPapers"
 categories = ["command-line-utilities"]
-exclude = ["img/"]
+exclude = ["img/", ".github/"]
 readme = "README.md"
 license = "GPL-3.0"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 
 [dependencies]
-image = "0.23.14"
-clap = "2.34.0"
+image = "0.24.1"
+clap = { version = "4.1.13", features = ["cargo", "derive"] }
+resvg = "0.35.0"
+imageproc = "0.23.0"
+usvg = "0.35.0"
+tiny-skia = "0.10.0"
