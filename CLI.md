@@ -1,47 +1,54 @@
 # 🚀 ArchPapers-CLI
 
 ## Installation
+
 ### Build From Source
-1. [Install Rust & Cargo](https://rustup.rs/)
+
+1. [Install Rust & Cargo](https://rustup.rs)
 2. Build The Crate with the following command
+
 ```bash
 $ cargo install arch_papers
 ```
 
 ### Download a Binary
+
 Head over to [Releases](https://github.com/Basicprogrammer10/ArchPapers/releases) and download the executable.
 
-Bonus points if you verify it with GPG. My key is [here](https://connorcode.com/key.asc).
+Bonus points if you verify it with GPG.
+My key is [here](https://connorcode.com/key.asc).
 
 ## Usage
+
 Running with the flag `--help` will show the following help message
+
 ```
-Archpapers 1.0
-Connor Slade <connor@connorcode.com>
-Genarate Arch Linux Wallpapers
+Generate Arch Linux Wallpapers
 
-USAGE:
-    arch_papers [OPTIONS] <INPUT> <OUTPUT>
+Usage: arch_papers.exe [OPTIONS] <INPUT> <OUTPUT>
 
-FLAGS:
-    -h, --help       Prints help information
-    -V, --version    Prints version information
+Arguments:
+  <INPUT>   The image to use as the background / foreground
+  <OUTPUT>  The output file to write to
 
-OPTIONS:
-    -b, --blur <blur>        Blur the background image
-    -d, --darken <darken>    Darken the background image
-
-ARGS:
-    <INPUT>     Define background image to use
-    <OUTPUT>    Define output file to write to
+Options:
+  -i, --invert                 Invert the mask. By using this option, your supplied image will be used as the foreground
+  -c, --color <COLOR>          The color to use for the background [default: #171718]
+  -b, --blur <BLUR>            How much to blur the background image. None by default
+  -d, --darken <DARKEN>        How much to darken the background image. None by default
+  -t, --translate <TRANSLATE>  The translation to apply to the background image. (x, y) [default: 0,0]
+  -h, --help                   Print help
+  -V, --version                Print version
 ```
 
 Example usage:
+
 ```
 arch_papers image.png archified.png
 ```
 
-Or to blur and dim the background image
+Or to blur, dim, and translate the background image
+
 ```
-arch_papers -b 10 -d 10 image.png archified.png
+arch_papers -b 10 -d 10 -t 1240,-80 image.png archified.png
 ```
