@@ -1,5 +1,7 @@
 # All Wallpapers
 
+Note: There are a few other wallpapers in the [cli documentation](../CLI.md) that don't use the Arch Linux logo.
+
 ### [🖼 Download Images](https://connorcode.com/files/Photos/ArchPapers.zip)
 
 ---
