@@ -32,13 +32,15 @@ Arguments:
   <OUTPUT>  The output file to write to
 
 Options:
-  -i, --invert                 Invert the mask. By using this option, your supplied image will be used as the foreground
-  -c, --color <COLOR>          The color to use for the background [default: #171718]
-  -b, --blur <BLUR>            How much to blur the background image. None by default
-  -d, --darken <DARKEN>        How much to darken the background image. None by default
-  -t, --translate <TRANSLATE>  The translation to apply to the background image. (x, y) [default: 0,0]
-  -h, --help                   Print help
-  -V, --version                Print version
+  -i, --invert                   Invert the mask. By using this option, your supplied image will be used as the foreground
+  -c, --color <COLOR>            The color to use for the background [default: #171718]
+  -b, --blur <BLUR>              How much to blur the background image. None by default
+  -d, --darken <DARKEN>          How much to darken the background image. None by default
+  -t, --translate <TRANSLATE>    The translation to apply to the background image. (x, y) [default: 0,0]
+  -m, --mask <MASK>              Lets you use your own mask, not just the arch logo. The file MUST be a SVG with the alpha channel being used as the mask
+  -s, --mask-scale <MASK_SCALE>  The scale to apply to the mask. Useful for use with custom masks [default: 1.0]
+  -h, --help                     Print help
+  -V, --version                  Print version
 ```
 
 Example usage:

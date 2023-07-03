@@ -3,6 +3,7 @@ use std::path::PathBuf;
 use clap::Parser;
 
 #[derive(Parser)]
+#[clap(version = env!("CARGO_PKG_VERSION"), author = env!("CARGO_PKG_AUTHORS"), about = env!("CARGO_PKG_DESCRIPTION"))]
 pub struct Args {
     /// The image to use as the background / foreground.
     #[arg()]
@@ -35,6 +36,16 @@ pub struct Args {
     /// (x, y)
     #[arg(short, long, value_parser = coords, default_value = "0,0")]
     pub translate: (i32, i32),
+
+    /// Lets you use your own mask, not just the arch logo.
+    /// The file MUST be a SVG with the alpha channel being used as the mask.
+    #[arg(short, long, value_parser = svg)]
+    pub mask: Option<PathBuf>,
+
+    /// The scale to apply to the mask.
+    /// Useful for use with custom masks.
+    #[arg(short = 's', long, default_value = "1.0")]
+    pub mask_scale: f32,
 }
 
 fn hex(inp: &str) -> Result<[u8; 3], String> {
@@ -66,4 +77,22 @@ fn coords(inp: &str) -> Result<(i32, i32), String> {
         .map_err(|_| "Invalid Coordinates")?;
 
     Ok((x, y))
+}
+
+fn svg(inp: &str) -> Result<PathBuf, String> {
+    let inp = PathBuf::from(inp);
+
+    if !inp.exists() {
+        return Err("Path does not exist".into());
+    }
+
+    if !inp.is_file() {
+        return Err("Path is not a file".into());
+    }
+
+    if inp.extension().unwrap_or_default() != "svg" {
+        return Err("Path is not a SVG".into());
+    }
+
+    Ok(inp)
 }
