@@ -38,7 +38,7 @@ pub struct Args {
 }
 
 fn hex(inp: &str) -> Result<[u8; 3], String> {
-    let inp = inp.strip_prefix('#').unwrap_or(&inp);
+    let inp = inp.strip_prefix('#').unwrap_or(inp);
     if inp.len() != 6 {
         return Err("Invalid Hex Color".into());
     }

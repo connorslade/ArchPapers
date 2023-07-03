@@ -1,8 +1,7 @@
 use clap::Parser;
 use image::{DynamicImage, RgbaImage};
-use imageproc;
-use resvg::tiny_skia::{Color, Mask, MaskType, Pixmap, PremultipliedColorU8, Transform};
-use resvg::usvg::{self, Options, TreeParsing};
+use tiny_skia::{Color, Mask, MaskType, Pixmap, PremultipliedColorU8, Transform};
+use usvg::{Options, TreeParsing};
 
 mod args;
 
@@ -27,7 +26,7 @@ fn main() {
     // Blur
     if let Some(i) = arg.blur {
         println!("[*] Blurring Image");
-        bg = bg.blur(i);
+        bg = DynamicImage::from(imageproc::filter::gaussian_blur_f32(&bg.to_rgb8(), i));
     }
 
     // Darken

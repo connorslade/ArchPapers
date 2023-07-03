@@ -80,6 +80,8 @@ dependencies = [
  "image",
  "imageproc",
  "resvg",
+ "tiny-skia",
+ "usvg",
 ]
 
 [[package]]
