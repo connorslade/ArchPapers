@@ -19,12 +19,6 @@ fn main() {
         Err(_) => return println!("[-] Invalid Image Input"),
     };
 
-    // Translate
-    bg = DynamicImage::from(imageproc::geometric_transformations::translate(
-        &bg.to_rgb8(),
-        (arg.translate.0, arg.translate.1),
-    ));
-
     // Create foreground mask
     let size = arg.size.unwrap_or((bg.width(), bg.height()));
     let mut colored = if arg.original {
@@ -46,6 +40,12 @@ fn main() {
         ));
         single_color_bg
     };
+
+    // Translate
+    bg = DynamicImage::from(imageproc::geometric_transformations::translate(
+        &bg.to_rgb8(),
+        (arg.translate.0, arg.translate.1),
+    ));
 
     // Blur
     if let Some(i) = arg.blur {
