@@ -28,6 +28,9 @@ fn main() {
     // Create foreground mask
     let size = arg.size.unwrap_or((bg.width(), bg.height()));
     let mut colored = if arg.original {
+        if arg.size.is_some() {
+            println!("[-] Using --size contradicts --original, the size will be ignored");
+        }
         Pixmap::from_vec(
             bg.to_rgba8().into_vec(),
             IntSize::from_wh(bg.width(), bg.height()).expect("Size too big"),
