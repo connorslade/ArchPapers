@@ -2,7 +2,7 @@ use std::{borrow::Cow, fs};
 
 use clap::Parser;
 use image::{DynamicImage, RgbaImage};
-use tiny_skia::{Color, Mask, MaskType, Pixmap, PremultipliedColorU8, Transform};
+use tiny_skia::{Color, IntSize, Mask, MaskType, Pixmap, PremultipliedColorU8, Transform};
 use usvg::{Options, TreeParsing};
 
 mod args;
@@ -25,6 +25,25 @@ fn main() {
         (arg.translate.0, arg.translate.1),
     ));
 
+    // Create foreground mask
+    let size = arg.size.unwrap_or((bg.width(), bg.height()));
+    let mut colored = if arg.original {
+        Pixmap::from_vec(
+            bg.to_rgba8().into_vec(),
+            IntSize::from_wh(bg.width(), bg.height()).expect("Size too big"),
+        )
+        .unwrap()
+    } else {
+        let mut single_color_bg = Pixmap::new(size.0, size.1).unwrap();
+        single_color_bg.fill(Color::from_rgba8(
+            arg.color[0],
+            arg.color[1],
+            arg.color[2],
+            255,
+        ));
+        single_color_bg
+    };
+
     // Blur
     if let Some(i) = arg.blur {
         println!("[*] Blurring Image");
@@ -40,21 +59,12 @@ fn main() {
     println!("[*] Generating Image");
 
     // Load mask from SVG
-    let size = arg.size.unwrap_or((bg.width(), bg.height()));
     let mask_data = match arg.mask {
         Some(m) => Cow::Owned(fs::read(m).expect("Error reading mask")),
         None => Cow::Borrowed(MASK),
     };
     let mask = render_mask(mask_data, size, arg.mask_scale, arg.invert);
 
-    // Create foreground mask
-    let mut colored = Pixmap::new(size.0, size.1).unwrap();
-    colored.fill(Color::from_rgba8(
-        arg.color[0],
-        arg.color[1],
-        arg.color[2],
-        255,
-    ));
     colored.apply_mask(&mask);
 
     // Scale background image
