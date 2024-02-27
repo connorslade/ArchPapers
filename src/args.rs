@@ -24,6 +24,10 @@ pub struct Args {
     #[arg(short, long, value_parser = hex, default_value = "#171718")]
     pub color: [u8; 3],
 
+    /// Whether to use the original image as background
+    #[arg(short, long)]
+    pub original: bool,
+
     /// The translation to apply to the background image.
     /// (x, y)
     #[arg(short, long, value_parser = coords::<i32>, default_value = "0,0")]
